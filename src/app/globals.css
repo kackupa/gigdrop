@@ -1,26 +1,187 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --foreground: #171717;
-  --background: #ffffff;
+  --accent: #33ff66;
+  --accent-dim: rgba(51, 255, 102, 0.3);
+  --border: rgba(51, 255, 102, 0.15);
+  --bg: #000000;
+  --text: rgba(224, 224, 224, 1);
+  --text-dim: rgba(224, 224, 224, 0.5);
+  --text-label: rgba(224, 224, 224, 0.35);
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: system-ui, -apple-system, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  font-family: 'Fira Code', monospace;
+  -webkit-font-smoothing: antialiased;
 }
 
+/* Arcade buttons */
 .btn-primary {
-  @apply bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-colors;
+  background: var(--accent);
+  color: #000;
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 12px 24px;
+  border: 1px solid var(--accent);
+  box-shadow: 3px 3px 0 rgba(51, 255, 102, 0.3);
+  transition: all 0.1s;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  box-shadow: 1px 1px 0 rgba(51, 255, 102, 0.3);
+  transform: translate(2px, 2px);
+}
+
+.btn-primary:active {
+  box-shadow: 0 0 0;
+  transform: translate(3px, 3px);
+}
+
+.btn-primary:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
 }
 
 .btn-secondary {
-  @apply bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-lg transition-colors;
+  background: transparent;
+  color: var(--text-dim);
+  font-weight: 600;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 12px 24px;
+  border: 1px solid var(--border);
+  transition: all 0.1s;
+  cursor: pointer;
 }
 
+.btn-secondary:hover {
+  color: var(--text);
+  border-color: var(--accent-dim);
+  box-shadow: 0 0 8px rgba(51, 255, 102, 0.1);
+}
+
+/* Arcade panels */
 .card {
-  @apply bg-white border border-gray-200 rounded-xl p-6 shadow-sm;
+  background: rgba(51, 255, 102, 0.02);
+  border: 1px solid var(--border);
+  padding: 24px;
+  transition: all 0.15s;
+}
+
+.card:hover {
+  border-color: var(--accent-dim);
+  box-shadow: 4px 4px 0 rgba(51, 255, 102, 0.08);
+  transform: translate(-1px, -1px);
+}
+
+/* Dot background */
+.dot-bg {
+  background-image: radial-gradient(rgba(51, 255, 102, 0.06) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Vertical accent line */
+.accent-line {
+  position: relative;
+}
+
+.accent-line::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, transparent, var(--accent-dim), transparent);
+}
+
+/* Form inputs */
+input, textarea {
+  background: rgba(51, 255, 102, 0.03);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: 'Fira Code', monospace;
+  font-size: 13px;
+  padding: 10px 14px;
+  transition: border-color 0.15s;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  border-color: var(--accent-dim);
+  box-shadow: 0 0 0 1px rgba(51, 255, 102, 0.1);
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--text-label);
+}
+
+/* Badge */
+.badge {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  color: var(--accent);
+}
+
+/* Status badges */
+.status-open {
+  background: rgba(51, 255, 102, 0.08);
+  border-color: var(--accent-dim);
+  color: var(--accent);
+}
+
+.status-assigned {
+  background: rgba(255, 200, 51, 0.08);
+  border-color: rgba(255, 200, 51, 0.3);
+  color: #ffc833;
+}
+
+.status-completed {
+  background: rgba(51, 255, 102, 0.12);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.status-cancelled {
+  background: rgba(255, 80, 80, 0.08);
+  border-color: rgba(255, 80, 80, 0.3);
+  color: #ff5050;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-dim);
 }

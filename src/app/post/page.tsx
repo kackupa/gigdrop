@@ -60,65 +60,84 @@ export default function PostJobPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen dot-bg">
       <Navbar />
 
-      <div className="max-w-2xl mx-auto py-8 px-4">
-        <h1 className="text-3xl font-bold mb-6">Post a Job</h1>
+      <div className="accent-line">
+        <div className="max-w-2xl py-8 px-4 sm:pl-6">
+          <p className="text-[9px] tracking-[0.35em] text-[var(--accent-dim)] uppercase mb-2">
+            Create
+          </p>
+          <h1 className="text-2xl font-light tracking-wide mb-8">Post a Job</h1>
 
-        <form onSubmit={handleSubmit} className="card space-y-6">
-          {error && (
-            <div className="bg-red-50 text-red-600 p-3 rounded-lg text-sm">{error}</div>
-          )}
+          <form onSubmit={handleSubmit} className="card space-y-6">
+            {error && (
+              <div className="border border-red-500/30 bg-red-500/5 p-3 text-xs text-red-400">
+                {error}
+              </div>
+            )}
 
-          <div>
-            <label className="block text-sm font-medium mb-1">Job Title</label>
-            <input
-              type="text"
-              value={form.title}
-              onChange={e => setForm({ ...form, title: e.target.value })}
-              className="w-full border rounded-lg px-3 py-2"
-              placeholder="e.g. Build a landing page"
-              required
-            />
-          </div>
+            <div>
+              <label className="block text-[10px] tracking-[0.2em] text-[var(--text-label)] uppercase mb-2">
+                Job Title
+              </label>
+              <input
+                type="text"
+                value={form.title}
+                onChange={e => setForm({ ...form, title: e.target.value })}
+                className="w-full"
+                placeholder="e.g. Build a landing page"
+                required
+              />
+            </div>
 
-          <div>
-            <label className="block text-sm font-medium mb-1">Description</label>
-            <textarea
-              value={form.description}
-              onChange={e => setForm({ ...form, description: e.target.value })}
-              className="w-full border rounded-lg px-3 py-2 h-32"
-              placeholder="Describe what you need done, requirements, deliverables..."
-              required
-            />
-          </div>
+            <div>
+              <label className="block text-[10px] tracking-[0.2em] text-[var(--text-label)] uppercase mb-2">
+                Description
+              </label>
+              <textarea
+                value={form.description}
+                onChange={e => setForm({ ...form, description: e.target.value })}
+                className="w-full h-32"
+                placeholder="Describe what you need done, requirements, deliverables..."
+                required
+              />
+            </div>
 
-          <div>
-            <label className="block text-sm font-medium mb-1">Budget (SOL)</label>
-            <input
-              type="number"
-              step="0.01"
-              min="0.01"
-              value={form.budget_sol}
-              onChange={e => setForm({ ...form, budget_sol: e.target.value })}
-              className="w-full border rounded-lg px-3 py-2"
-              placeholder="e.g. 5.00"
-              required
-            />
-            <p className="text-sm text-gray-500 mt-1">
-              2% platform fee applies. Freelancer receives 98%.
-            </p>
-          </div>
+            <div>
+              <label className="block text-[10px] tracking-[0.2em] text-[var(--text-label)] uppercase mb-2">
+                Budget (SOL)
+              </label>
+              <input
+                type="number"
+                step="0.01"
+                min="0.01"
+                value={form.budget_sol}
+                onChange={e => setForm({ ...form, budget_sol: e.target.value })}
+                className="w-full"
+                placeholder="e.g. 5.00"
+                required
+              />
+              <p className="text-[10px] text-[var(--text-label)] mt-2 tracking-wide">
+                2% platform fee applies. Freelancer receives 98%.
+              </p>
+            </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="btn-primary w-full py-3 text-lg disabled:opacity-50"
-          >
-            {loading ? 'Creating...' : 'Post Job'}
-          </button>
-        </form>
+            <button
+              type="submit"
+              disabled={loading || !connected}
+              className="btn-primary w-full disabled:opacity-30"
+            >
+              {loading ? 'Creating...' : 'Post Job'}
+            </button>
+
+            {!connected && (
+              <p className="text-[10px] text-[var(--text-label)] text-center tracking-wide">
+                Connect your wallet to post a job
+              </p>
+            )}
+          </form>
+        </div>
       </div>
     </main>
   )

@@ -65,63 +65,89 @@ export default function JobDetailPage() {
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <p className="text-gray-500">Loading...</p>
+      <main className="min-h-screen dot-bg">
+        <Navbar />
+        <div className="max-w-2xl mx-auto py-8 px-4">
+          <p className="text-[var(--text-dim)] text-xs">Loading...</p>
+        </div>
       </main>
     )
   }
 
   if (!job) {
     return (
-      <main className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <p className="text-gray-500">Job not found</p>
+      <main className="min-h-screen dot-bg">
+        <Navbar />
+        <div className="max-w-2xl mx-auto py-8 px-4">
+          <p className="text-[var(--text-dim)] text-xs">Job not found</p>
+        </div>
       </main>
     )
   }
 
-  const statusColors: Record<string, string> = {
-    open: 'bg-blue-100 text-blue-700',
-    assigned: 'bg-yellow-100 text-yellow-700',
-    completed: 'bg-green-100 text-green-700',
-    cancelled: 'bg-red-100 text-red-700',
+  const statusClass: Record<string, string> = {
+    open: 'badge status-open',
+    assigned: 'badge status-assigned',
+    completed: 'badge status-completed',
+    cancelled: 'badge status-cancelled',
   }
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen dot-bg">
       <Navbar />
 
-      <div className="max-w-2xl mx-auto py-8 px-4">
-        <div className="card">
-          <div className="flex justify-between items-start mb-4">
-            <h1 className="text-2xl font-bold">{job.title}</h1>
-            <span className={`px-3 py-1 rounded-full text-sm font-medium ${statusColors[job.status]}`}>
+      <div className="accent-line">
+        <div className="max-w-2xl py-8 px-4 sm:pl-6">
+          <p className="text-[9px] tracking-[0.35em] text-[var(--accent-dim)] uppercase mb-2">
+            Job #{job.id}
+          </p>
+
+          <div className="flex items-start justify-between mb-6">
+            <h1 className="text-xl font-light tracking-wide">{job.title}</h1>
+            <span className={statusClass[job.status] || 'badge'}>
               {job.status}
             </span>
           </div>
 
-          <p className="text-gray-600 mb-6 whitespace-pre-wrap">{job.description}</p>
+          <div className="card mb-4">
+            <p className="text-[var(--text-dim)] text-xs leading-relaxed whitespace-pre-wrap">
+              {job.description}
+            </p>
+          </div>
 
           <div className="grid grid-cols-2 gap-4 mb-6">
-            <div>
-              <p className="text-sm text-gray-500">Budget</p>
-              <p className="text-2xl font-bold text-purple-600">
-                {(job.budget_lamports / 1e9).toFixed(2)} SOL
+            <div className="card">
+              <p className="text-[9px] tracking-[0.3em] text-[var(--text-label)] uppercase mb-1">
+                Budget
+              </p>
+              <p className="text-2xl font-light text-[var(--accent)]">
+                {(job.budget_lamports / 1e9).toFixed(2)}
+                <span className="text-xs text-[var(--text-label)] ml-1">SOL</span>
               </p>
             </div>
-            <div>
-              <p className="text-sm text-gray-500">Posted by</p>
-              <p className="font-medium">{job.poster_name || 'Anonymous'}</p>
+            <div className="card">
+              <p className="text-[9px] tracking-[0.3em] text-[var(--text-label)] uppercase mb-1">
+                Posted By
+              </p>
+              <p className="text-sm text-[var(--text)]">
+                {job.poster_name || 'Anonymous'}
+              </p>
             </div>
           </div>
 
           {/* Escrow status */}
           {job.darkdrop_claim_code && (
-            <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
-              <h3 className="font-semibold text-green-800 mb-2">Funds Locked in Escrow</h3>
-              <p className="text-sm text-green-700 mb-2">
+            <div className="card mb-6 border-[var(--accent-dim)]">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-2 h-2 rounded-full bg-[var(--accent)]" />
+                <span className="text-[10px] tracking-[0.2em] text-[var(--accent)] uppercase font-semibold">
+                  Funds Locked in Escrow
+                </span>
+              </div>
+              <p className="text-[10px] text-[var(--text-label)] mb-2 tracking-wide">
                 Claim code (proves funds exist):
               </p>
-              <code className="block bg-white p-2 rounded text-xs break-all">
+              <code className="block text-[11px] text-[var(--accent)] break-all p-3 bg-[rgba(51,255,102,0.03)] border border-[var(--border)]">
                 {job.darkdrop_claim_code}
               </code>
             </div>
@@ -131,26 +157,34 @@ export default function JobDetailPage() {
           {job.status === 'assigned' && !showPassword && (
             <button
               onClick={handleRelease}
-              disabled={releasing}
-              className="btn-primary w-full py-3 text-lg disabled:opacity-50"
+              disabled={releasing || !connected}
+              className="btn-primary w-full disabled:opacity-30"
             >
               {releasing ? 'Releasing...' : 'Approve Work & Release Payment'}
             </button>
           )}
 
           {showPassword && releaseData && (
-            <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
-              <h3 className="font-semibold text-purple-800 mb-2">Payment Released!</h3>
-              <p className="text-sm text-purple-700 mb-3">
-                Share this password with the freelancer so they can claim their payment:
+            <div className="card border-[var(--accent-dim)]">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-2 h-2 rounded-full bg-[var(--accent)]" />
+                <span className="text-[10px] tracking-[0.2em] text-[var(--accent)] uppercase font-semibold">
+                  Payment Released
+                </span>
+              </div>
+              <p className="text-[10px] text-[var(--text-dim)] mb-3 tracking-wide">
+                Share this password with the freelancer so they can claim:
               </p>
-              <code className="block bg-white p-3 rounded text-sm break-all font-mono">
+              <code className="block text-xs text-[var(--accent)] break-all p-3 bg-[rgba(51,255,102,0.03)] border border-[var(--border)]">
                 {releaseData.password}
               </code>
-              <p className="text-xs text-purple-600 mt-2">
-                Freelancer payout: {(releaseData.amount_lamports / 1e9).toFixed(2)} SOL
-                (Platform fee: {(releaseData.platform_fee_lamports / 1e9).toFixed(4)} SOL)
-              </p>
+              <div className="mt-3 pt-3 border-t border-[var(--border)]">
+                <p className="text-[10px] text-[var(--text-label)] tracking-wide">
+                  Payout: {(releaseData.amount_lamports / 1e9).toFixed(2)} SOL
+                  <span className="mx-2">|</span>
+                  Fee: {(releaseData.platform_fee_lamports / 1e9).toFixed(4)} SOL
+                </p>
+              </div>
             </div>
           )}
         </div>

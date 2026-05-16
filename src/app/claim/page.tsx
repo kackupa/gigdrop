@@ -24,8 +24,6 @@ export default function ClaimPage() {
     setError('')
 
     try {
-      // In production, this would call DarkDrop's claim endpoint
-      // For now, we show the freelancer what they'd receive
       setResult({
         claim_code: claimCode,
         message: 'Claim code validated. In production, this would submit a ZK proof to claim your SOL.',
@@ -39,52 +37,62 @@ export default function ClaimPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen dot-bg">
       <Navbar />
 
-      <div className="max-w-2xl mx-auto py-8 px-4">
-        <h1 className="text-3xl font-bold mb-6">Claim Payment</h1>
-
-        <div className="card">
-          <p className="text-gray-600 mb-6">
-            Received a claim code and password from a client? Enter them here to claim your SOL payment.
+      <div className="accent-line">
+        <div className="max-w-2xl py-8 px-4 sm:pl-6">
+          <p className="text-[9px] tracking-[0.35em] text-[var(--accent-dim)] uppercase mb-2">
+            Claim
+          </p>
+          <h1 className="text-2xl font-light tracking-wide mb-2">Claim Payment</h1>
+          <p className="text-[var(--text-dim)] text-xs mb-8">
+            Received a claim code and password from a client? Enter them here to claim your SOL.
           </p>
 
-          <form onSubmit={handleClaim} className="space-y-4">
+          <form onSubmit={handleClaim} className="card space-y-6">
             {error && (
-              <div className="bg-red-50 text-red-600 p-3 rounded-lg text-sm">{error}</div>
+              <div className="border border-red-500/30 bg-red-500/5 p-3 text-xs text-red-400">
+                {error}
+              </div>
             )}
 
             <div>
-              <label className="block text-sm font-medium mb-1">Claim Code</label>
+              <label className="block text-[10px] tracking-[0.2em] text-[var(--text-label)] uppercase mb-2">
+                Claim Code
+              </label>
               <input
                 type="text"
                 value={claimCode}
                 onChange={e => setClaimCode(e.target.value)}
-                className="w-full border rounded-lg px-3 py-2 font-mono text-sm"
+                className="w-full font-mono"
                 placeholder="Enter the claim code from the client"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1">Password</label>
+              <label className="block text-[10px] tracking-[0.2em] text-[var(--text-label)] uppercase mb-2">
+                Password
+              </label>
               <input
                 type="text"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
-                className="w-full border rounded-lg px-3 py-2 font-mono text-sm"
+                className="w-full font-mono"
                 placeholder="Enter the password from the client"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1">Your Wallet</label>
+              <label className="block text-[10px] tracking-[0.2em] text-[var(--text-label)] uppercase mb-2">
+                Your Wallet
+              </label>
               <input
                 type="text"
                 value={publicKey || ''}
-                className="w-full border rounded-lg px-3 py-2 bg-gray-50 text-gray-600"
+                className="w-full text-[var(--text-dim)]"
                 disabled
                 placeholder="Connect wallet above"
               />
@@ -93,17 +101,28 @@ export default function ClaimPage() {
             <button
               type="submit"
               disabled={loading || !connected}
-              className="btn-primary w-full py-3 text-lg disabled:opacity-50"
+              className="btn-primary w-full disabled:opacity-30"
             >
               {loading ? 'Claiming...' : 'Claim Payment'}
             </button>
+
+            {!connected && (
+              <p className="text-[10px] text-[var(--text-label)] text-center tracking-wide">
+                Connect your wallet to claim
+              </p>
+            )}
           </form>
 
           {result && (
-            <div className="mt-6 bg-green-50 border border-green-200 rounded-lg p-4">
-              <h3 className="font-semibold text-green-800 mb-2">Claim Submitted</h3>
-              <p className="text-sm text-green-700">{result.message}</p>
-              <p className="text-xs text-green-600 mt-2">{result.note}</p>
+            <div className="card border-[var(--accent-dim)] mt-4">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-2 h-2 rounded-full bg-[var(--accent)]" />
+                <span className="text-[10px] tracking-[0.2em] text-[var(--accent)] uppercase font-semibold">
+                  Claim Submitted
+                </span>
+              </div>
+              <p className="text-xs text-[var(--text-dim)] mb-2">{result.message}</p>
+              <p className="text-[10px] text-[var(--text-label)]">{result.note}</p>
             </div>
           )}
         </div>

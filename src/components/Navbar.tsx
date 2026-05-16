@@ -5,20 +5,20 @@ import { ConnectButton } from './ConnectButton'
 
 export function Navbar() {
   return (
-    <nav className="bg-white border-b px-4 py-3">
+    <nav className="border-b border-[var(--border)] px-4 sm:pl-6 py-4">
       <div className="max-w-4xl mx-auto flex justify-between items-center">
-        <Link href="/" className="text-xl font-bold text-purple-600">
+        <Link href="/" className="text-sm font-semibold tracking-[0.2em] text-[var(--accent)] uppercase">
           GigDrop
         </Link>
-        <div className="flex items-center gap-4">
-          <Link href="/jobs" className="text-gray-600 hover:text-gray-900">
-            Browse Jobs
+        <div className="flex items-center gap-6">
+          <Link href="/jobs" className="text-[11px] tracking-[0.15em] text-[var(--text-dim)] hover:text-[var(--accent)] transition-colors uppercase">
+            Jobs
           </Link>
-          <Link href="/post" className="text-gray-600 hover:text-gray-900">
-            Post a Job
+          <Link href="/post" className="text-[11px] tracking-[0.15em] text-[var(--text-dim)] hover:text-[var(--accent)] transition-colors uppercase">
+            Post
           </Link>
-          <Link href="/claim" className="text-gray-600 hover:text-gray-900">
-            Claim Payment
+          <Link href="/claim" className="text-[11px] tracking-[0.15em] text-[var(--text-dim)] hover:text-[var(--accent)] transition-colors uppercase">
+            Claim
           </Link>
           <ConnectButton />
         </div>
