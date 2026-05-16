@@ -20,6 +20,9 @@ export function Navbar() {
           <Link href="/claim" className="text-[11px] tracking-[0.15em] text-[var(--text-dim)] hover:text-[var(--accent)] transition-colors uppercase">
             Claim
           </Link>
+          <Link href="/verify" className="text-[11px] tracking-[0.15em] text-[var(--text-dim)] hover:text-[var(--accent)] transition-colors uppercase">
+            Verify
+          </Link>
           <Link href="/dashboard" className="text-[11px] tracking-[0.15em] text-[var(--text-dim)] hover:text-[var(--accent)] transition-colors uppercase">
             Dashboard
           </Link>

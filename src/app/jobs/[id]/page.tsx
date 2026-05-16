@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
+import Link from 'next/link'
 import { Navbar } from '@/components/Navbar'
 import { useWallet } from '@/components/WalletProvider'
 
@@ -136,10 +137,10 @@ export default function JobDetailPage() {
           </div>
 
           {/* Escrow status */}
-          {job.darkdrop_claim_code && (
+          {job.darkdrop_claim_code ? (
             <div className="card mb-6 border-[var(--accent-dim)]">
               <div className="flex items-center gap-2 mb-3">
-                <div className="w-2 h-2 rounded-full bg-[var(--accent)]" />
+                <div className="w-2 h-2 rounded-full bg-[var(--accent)] shadow-[0_0_6px_var(--accent)] animate-pulse-glow" />
                 <span className="text-[10px] tracking-[0.2em] text-[var(--accent)] uppercase font-semibold">
                   Funds Locked in Escrow
                 </span>
@@ -150,6 +151,26 @@ export default function JobDetailPage() {
               <code className="block text-[11px] text-[var(--accent)] break-all p-3 bg-[rgba(51,255,102,0.03)] border border-[var(--border)]">
                 {job.darkdrop_claim_code}
               </code>
+              <div className="mt-4 pt-3 border-t border-[var(--border)]">
+                <Link
+                  href={`/verify?job_id=${job.id}`}
+                  className="btn-secondary inline-block"
+                >
+                  Verify on Chain
+                </Link>
+              </div>
+            </div>
+          ) : (
+            <div className="card mb-6 border-red-500/20">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-2 h-2 rounded-full bg-red-500" />
+                <span className="text-[10px] tracking-[0.2em] text-red-400 uppercase font-semibold">
+                  No Collateral Deposited
+                </span>
+              </div>
+              <p className="text-[10px] text-[var(--text-dim)]">
+                The job poster has not deposited funds yet. Do not start work until collateral is verified.
+              </p>
             </div>
           )}
 

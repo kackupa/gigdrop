@@ -77,8 +77,10 @@ export default function JobsPage() {
                         {(job.budget_lamports / 1e9).toFixed(2)}
                         <span className="text-xs text-[var(--text-label)] ml-1">SOL</span>
                       </div>
-                      {job.darkdrop_claim_code && (
+                      {job.darkdrop_claim_code ? (
                         <span className="badge status-open mt-2">Funded</span>
+                      ) : (
+                        <span className="badge status-cancelled mt-2">No Collateral</span>
                       )}
                     </div>
                   </div>
