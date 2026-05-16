@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { Navbar } from '@/components/Navbar'
 
 interface Job {
   id: number
@@ -30,12 +31,7 @@ export default function JobsPage() {
 
   return (
     <main className="min-h-screen bg-gray-50">
-      <nav className="bg-white border-b px-4 py-3">
-        <div className="max-w-4xl mx-auto flex justify-between items-center">
-          <Link href="/" className="text-xl font-bold text-purple-600">GigDrop</Link>
-          <Link href="/post" className="btn-primary">Post a Job</Link>
-        </div>
-      </nav>
+      <Navbar />
 
       <div className="max-w-4xl mx-auto py-8 px-4">
         <h1 className="text-3xl font-bold mb-6">Open Jobs</h1>

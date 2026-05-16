@@ -2,10 +2,12 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import Link from 'next/link'
+import { Navbar } from '@/components/Navbar'
+import { useWallet } from '@/components/WalletProvider'
 
 export default function PostJobPage() {
   const router = useRouter()
+  const { publicKey, connected } = useWallet()
   const [form, setForm] = useState({
     title: '',
     description: '',
@@ -14,11 +16,14 @@ export default function PostJobPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
-  // In production, this would come from wallet connection
-  const DEMO_WALLET = 'DemoWallet111111111111111111111111111111111111'
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    if (!connected || !publicKey) {
+      setError('Please connect your wallet first')
+      return
+    }
+
     setLoading(true)
     setError('')
 
@@ -33,7 +38,7 @@ export default function PostJobPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          wallet_address: DEMO_WALLET,
+          wallet_address: publicKey,
           title: form.title,
           description: form.description,
           budget_lamports: budgetLamports,
@@ -56,12 +61,7 @@ export default function PostJobPage() {
 
   return (
     <main className="min-h-screen bg-gray-50">
-      <nav className="bg-white border-b px-4 py-3">
-        <div className="max-w-4xl mx-auto flex justify-between items-center">
-          <Link href="/" className="text-xl font-bold text-purple-600">GigDrop</Link>
-          <Link href="/jobs" className="btn-secondary">Browse Jobs</Link>
-        </div>
-      </nav>
+      <Navbar />
 
       <div className="max-w-2xl mx-auto py-8 px-4">
         <h1 className="text-3xl font-bold mb-6">Post a Job</h1>

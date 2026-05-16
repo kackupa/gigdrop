@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
-import Link from 'next/link'
+import { Navbar } from '@/components/Navbar'
+import { useWallet } from '@/components/WalletProvider'
 
 interface Job {
   id: number
@@ -17,6 +18,7 @@ interface Job {
 
 export default function JobDetailPage() {
   const params = useParams()
+  const { publicKey, connected } = useWallet()
   const [job, setJob] = useState<Job | null>(null)
   const [loading, setLoading] = useState(true)
   const [showPassword, setShowPassword] = useState(false)
@@ -34,6 +36,11 @@ export default function JobDetailPage() {
   }, [params.id])
 
   const handleRelease = async () => {
+    if (!connected || !publicKey) {
+      alert('Please connect your wallet first')
+      return
+    }
+
     setReleasing(true)
     try {
       const res = await fetch('/api/escrow/release', {
@@ -41,7 +48,7 @@ export default function JobDetailPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           job_id: job?.id,
-          wallet_address: 'DemoWallet111111111111111111111111111111111111',
+          wallet_address: publicKey,
         }),
       })
       const data = await res.json()
@@ -81,12 +88,7 @@ export default function JobDetailPage() {
 
   return (
     <main className="min-h-screen bg-gray-50">
-      <nav className="bg-white border-b px-4 py-3">
-        <div className="max-w-4xl mx-auto flex justify-between items-center">
-          <Link href="/" className="text-xl font-bold text-purple-600">GigDrop</Link>
-          <Link href="/jobs" className="btn-secondary">Back to Jobs</Link>
-        </div>
-      </nav>
+      <Navbar />
 
       <div className="max-w-2xl mx-auto py-8 px-4">
         <div className="card">
