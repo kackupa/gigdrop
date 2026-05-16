@@ -7,11 +7,14 @@
 :root {
   --accent: #33ff66;
   --accent-dim: rgba(51, 255, 102, 0.3);
-  --border: rgba(51, 255, 102, 0.15);
+  --accent-glow: rgba(51, 255, 102, 0.15);
+  --border: rgba(51, 255, 102, 0.12);
+  --border-hover: rgba(51, 255, 102, 0.25);
   --bg: #000000;
+  --bg-panel: rgba(51, 255, 102, 0.015);
   --text: rgba(224, 224, 224, 1);
   --text-dim: rgba(224, 224, 224, 0.5);
-  --text-label: rgba(224, 224, 224, 0.35);
+  --text-label: rgba(224, 224, 224, 0.3);
 }
 
 * {
@@ -25,23 +28,26 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Arcade buttons */
+/* ========== Arcade Buttons ========== */
+
 .btn-primary {
   background: var(--accent);
   color: #000;
+  font-family: 'Fira Code', monospace;
   font-weight: 700;
   font-size: 10px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   padding: 12px 24px;
   border: 1px solid var(--accent);
-  box-shadow: 3px 3px 0 rgba(51, 255, 102, 0.3);
-  transition: all 0.1s;
+  box-shadow: 3px 3px 0 var(--accent-dim);
+  transition: all 0.08s ease;
   cursor: pointer;
+  position: relative;
 }
 
 .btn-primary:hover {
-  box-shadow: 1px 1px 0 rgba(51, 255, 102, 0.3);
+  box-shadow: 1px 1px 0 var(--accent-dim);
   transform: translate(2px, 2px);
 }
 
@@ -51,7 +57,7 @@ body {
 }
 
 .btn-primary:disabled {
-  opacity: 0.3;
+  opacity: 0.2;
   cursor: not-allowed;
   box-shadow: none;
   transform: none;
@@ -60,43 +66,59 @@ body {
 .btn-secondary {
   background: transparent;
   color: var(--text-dim);
+  font-family: 'Fira Code', monospace;
   font-weight: 600;
   font-size: 10px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   padding: 12px 24px;
   border: 1px solid var(--border);
-  transition: all 0.1s;
+  transition: all 0.1s ease;
   cursor: pointer;
 }
 
 .btn-secondary:hover {
   color: var(--text);
   border-color: var(--accent-dim);
-  box-shadow: 0 0 8px rgba(51, 255, 102, 0.1);
+  box-shadow: 0 0 12px var(--accent-glow);
 }
 
-/* Arcade panels */
-.card {
-  background: rgba(51, 255, 102, 0.02);
+/* ========== Arcade Panels ========== */
+
+.arcade-panel {
+  background: var(--bg-panel);
   border: 1px solid var(--border);
-  padding: 24px;
-  transition: all 0.15s;
+  padding: 20px;
+  transition: all 0.15s ease;
+  position: relative;
 }
 
-.card:hover {
-  border-color: var(--accent-dim);
-  box-shadow: 4px 4px 0 rgba(51, 255, 102, 0.08);
+.arcade-panel:hover {
+  border-color: var(--border-hover);
+  box-shadow:
+    4px 4px 0 var(--accent-glow),
+    0 0 20px rgba(51, 255, 102, 0.03);
   transform: translate(-1px, -1px);
 }
 
-/* Dot background */
-.dot-bg {
-  background-image: radial-gradient(rgba(51, 255, 102, 0.06) 1px, transparent 1px);
-  background-size: 24px 24px;
+.card {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  padding: 20px;
+  transition: all 0.15s ease;
 }
 
-/* Vertical accent line */
+.card:hover {
+  border-color: var(--border-hover);
+}
+
+/* ========== Layout ========== */
+
+.dot-bg {
+  background-image: radial-gradient(rgba(51, 255, 102, 0.035) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
 .accent-line {
   position: relative;
 }
@@ -108,33 +130,50 @@ body {
   top: 0;
   bottom: 0;
   width: 2px;
-  background: linear-gradient(to bottom, transparent, var(--accent-dim), transparent);
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    var(--accent-dim) 15%,
+    var(--accent) 50%,
+    var(--accent-dim) 85%,
+    transparent 100%
+  );
+  opacity: 0.4;
 }
 
-/* Form inputs */
+/* ========== Forms ========== */
+
 input, textarea {
-  background: rgba(51, 255, 102, 0.03);
+  background: rgba(51, 255, 102, 0.02);
   border: 1px solid var(--border);
   color: var(--text);
   font-family: 'Fira Code', monospace;
-  font-size: 13px;
+  font-size: 12px;
   padding: 10px 14px;
-  transition: border-color 0.15s;
+  transition: all 0.15s ease;
+  outline: none;
 }
 
 input:focus, textarea:focus {
-  outline: none;
   border-color: var(--accent-dim);
-  box-shadow: 0 0 0 1px rgba(51, 255, 102, 0.1);
+  box-shadow: 0 0 0 1px var(--accent-glow), 0 0 12px rgba(51, 255, 102, 0.05);
 }
 
 input::placeholder, textarea::placeholder {
   color: var(--text-label);
+  font-style: normal;
 }
 
-/* Badge */
+input:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ========== Badges ========== */
+
 .badge {
   display: inline-block;
+  font-family: 'Fira Code', monospace;
   font-size: 9px;
   font-weight: 600;
   letter-spacing: 0.15em;
@@ -144,34 +183,47 @@ input::placeholder, textarea::placeholder {
   color: var(--accent);
 }
 
-/* Status badges */
 .status-open {
-  background: rgba(51, 255, 102, 0.08);
+  background: rgba(51, 255, 102, 0.06);
   border-color: var(--accent-dim);
   color: var(--accent);
+  box-shadow: 0 0 8px rgba(51, 255, 102, 0.08);
 }
 
 .status-assigned {
-  background: rgba(255, 200, 51, 0.08);
-  border-color: rgba(255, 200, 51, 0.3);
+  background: rgba(255, 200, 51, 0.06);
+  border-color: rgba(255, 200, 51, 0.25);
   color: #ffc833;
+  box-shadow: 0 0 8px rgba(255, 200, 51, 0.08);
 }
 
 .status-completed {
-  background: rgba(51, 255, 102, 0.12);
+  background: rgba(51, 255, 102, 0.1);
   border-color: var(--accent);
   color: var(--accent);
+  box-shadow: 0 0 8px rgba(51, 255, 102, 0.12);
 }
 
 .status-cancelled {
-  background: rgba(255, 80, 80, 0.08);
-  border-color: rgba(255, 80, 80, 0.3);
+  background: rgba(255, 80, 80, 0.06);
+  border-color: rgba(255, 80, 80, 0.25);
   color: #ff5050;
 }
 
-/* Scrollbar */
+/* ========== Glow Effects ========== */
+
+.glow-text {
+  text-shadow: 0 0 10px var(--accent-glow), 0 0 20px rgba(51, 255, 102, 0.05);
+}
+
+.glow-border {
+  box-shadow: 0 0 8px var(--accent-glow);
+}
+
+/* ========== Scrollbar ========== */
+
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 4px;
 }
 
 ::-webkit-scrollbar-track {
@@ -180,8 +232,40 @@ input::placeholder, textarea::placeholder {
 
 ::-webkit-scrollbar-thumb {
   background: var(--border);
+  border-radius: 0;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--accent-dim);
+}
+
+/* ========== Selection ========== */
+
+::selection {
+  background: var(--accent);
+  color: #000;
+}
+
+/* ========== Animations ========== */
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  92% { opacity: 1; }
+  93% { opacity: 0.8; }
+  94% { opacity: 1; }
+  96% { opacity: 0.9; }
+  97% { opacity: 1; }
+}
+
+.animate-flicker {
+  animation: flicker 4s ease-in-out infinite;
 }
