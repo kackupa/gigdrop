@@ -17,6 +17,9 @@ export function Navbar() {
           <Link href="/post" className="text-gray-600 hover:text-gray-900">
             Post a Job
           </Link>
+          <Link href="/claim" className="text-gray-600 hover:text-gray-900">
+            Claim Payment
+          </Link>
           <ConnectButton />
         </div>
       </div>
